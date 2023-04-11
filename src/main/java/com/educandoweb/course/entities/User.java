@@ -7,11 +7,15 @@ import java.util.List;
 import java.util.Objects;
 
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import com.educandoweb.course.entities.enums.Role;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -30,6 +34,9 @@ public class User implements Serializable, UserDetails {
 	private String email;
 	private String phone;
 	private String password;
+	
+	@Enumerated(EnumType.STRING)
+	private Role role;
 	
 	
 	@JsonIgnore
@@ -51,7 +58,7 @@ public class User implements Serializable, UserDetails {
 	
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
-		return null;
+		return List.of(new SimpleGrantedAuthority(role.name()));
 	}
 
 	@Override
@@ -107,7 +114,7 @@ public class User implements Serializable, UserDetails {
 	}
 
 	public String getPhone() {
-		return phone+"A";
+		return phone;
 	}
 
 	public void setPhone(String phone) {

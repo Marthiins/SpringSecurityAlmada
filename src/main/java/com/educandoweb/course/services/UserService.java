@@ -6,6 +6,9 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import com.educandoweb.course.entities.User;
@@ -16,14 +19,19 @@ import com.educandoweb.course.services.exceptions.ResourceNotFoundException;
 import jakarta.persistence.EntityNotFoundException;
 
 @Service
-public class UserService {
-
-	// Declarar a dependencia para o userRepository e fazer a injeção de dependência
+public class UserService implements UserDetailsService{
+	
 
 	@Autowired
 	private UserRepository repository;
+	
+	@Override
+	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+		return repository.findByEmail(username).orElseThrow(()-> new RuntimeException("Não encontrado"));
+	}
 
-	// Metodo retornar todos os ususarios do banco de dados
+
+
 	public List<User> findAll() {
 		return repository.findAll();
 
@@ -65,7 +73,7 @@ public class UserService {
 
 	private void updateData(User entity, User obj) {
 		entity.setName(obj.getName());
-		entity.setEmail(obj.getEmail());
+		entity.setEmail(obj.getUsername());
 		entity.setPhone(obj.getPhone());
 
 	}
