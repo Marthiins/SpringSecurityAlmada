@@ -9,6 +9,7 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.educandoweb.course.entities.User;
@@ -25,9 +26,13 @@ public class UserService implements UserDetailsService{
 	@Autowired
 	private UserRepository repository;
 	
+	@Autowired
+	private PasswordEncoder encoder;
+	
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-		return repository.findByEmail(username).orElseThrow(()-> new RuntimeException("Não encontrado"));
+		return repository.findByEmail(username)
+				.orElseThrow(()-> new RuntimeException("Não encontrado"));
 	}
 
 
@@ -45,6 +50,7 @@ public class UserService implements UserDetailsService{
 
 	// Inserir no banco de dados um novo objeto do tipo user
 	public User insert(User obj) {
+		obj.setPassword(encoder.encode(obj.getPassword()));
 		return repository.save(obj);
 	}
 
@@ -72,6 +78,7 @@ public class UserService implements UserDetailsService{
 	}
 
 	private void updateData(User entity, User obj) {
+		entity.setPassword(encoder.encode(obj.getPassword()));
 		entity.setName(obj.getName());
 		entity.setEmail(obj.getUsername());
 		entity.setPhone(obj.getPhone());

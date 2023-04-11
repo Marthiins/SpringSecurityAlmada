@@ -128,6 +128,10 @@ public class User implements Serializable, UserDetails {
 	public List<Order> getOrders() {
 		return orders;
 	}
+	
+	public void setRole(Role role) {
+		this.role = role;
+	}
 
 	@Override
 	public int hashCode() {

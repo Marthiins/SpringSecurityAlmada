@@ -31,6 +31,7 @@ public class TokenService {
 			return JWT.create()
 					.withIssuer("Spring Security")
 					.withSubject(user.getId().toString())
+					.withClaim("email", user.getUsername())
 					.withIssuedAt(Instant.now())
 					.withExpiresAt(expirationInstant())
 					.sign(secretAlgorithm());
@@ -52,7 +53,7 @@ public class TokenService {
 	}
 	
 	private Instant expirationInstant() {
-		return LocalDateTime.now().plusHours(Long.parseLong(expiration)).toInstant(ZoneOffset.of("03-00"));
+		return LocalDateTime.now().plusHours(Long.parseLong(expiration)).toInstant(ZoneOffset.of("-03:00"));
 	}
 	
 	private Algorithm secretAlgorithm() {
