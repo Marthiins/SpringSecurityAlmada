@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.educandoweb.course.entities.Product;
 import com.educandoweb.course.repositories.ProductRepository;
+import com.educandoweb.course.services.exceptions.ResourceNotFoundException;
 
 @Service
 public class ProductService {
@@ -26,7 +27,11 @@ public class ProductService {
 	
 	public Product findById(Long id) {
 		Optional<Product> obj =  repository.findById(id);//recuperar usuario por Id
-				return obj.get();
+		return obj.orElseThrow(
+				() -> new ResourceNotFoundException("Objeto não encontrado ID: " + ", Tipo: " + Product.class.getName()));
 	}
 	
-}
+
+	}
+
+	

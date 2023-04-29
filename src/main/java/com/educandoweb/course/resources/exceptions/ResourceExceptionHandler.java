@@ -12,12 +12,12 @@ import com.educandoweb.course.services.exceptions.ResourceNotFoundException;
 
 import jakarta.servlet.http.HttpServletRequest;
 
-@ControllerAdvice
+@ControllerAdvice //Anotação vai indicar que essa classe e responsavel por tratar erro
 public class ResourceExceptionHandler {
 
 	@ExceptionHandler(ResourceNotFoundException.class)
-	public ResponseEntity<StandardError> resourceNotFound(ResourceNotFoundException e, HttpServletRequest request){
-		String error = "Resource not foun";
+	public ResponseEntity<StandardError> resourceNotFound(ResourceNotFoundException e, HttpServletRequest request){ //Declarar o tipo da excessão a ser tratada da classe e declarar o http
+		String error = "Resource not found"; //Criei uma variavel
 		HttpStatus status = HttpStatus.NOT_FOUND;
 		StandardError err = new StandardError(Instant.now(), status.value(), error, e.getMessage(), request.getRequestURI());
 	    return ResponseEntity.status(status).body(err);
