@@ -6,6 +6,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.educandoweb.course.dto.ProductDTO;
 import com.educandoweb.course.entities.Product;
 import com.educandoweb.course.repositories.ProductRepository;
 import com.educandoweb.course.services.exceptions.ResourceNotFoundException;
@@ -23,15 +24,26 @@ public class ProductService {
 		return repository.findAll();
 		
 	}
-     //Metodo buscar usuario por ID depois tem que ir no Resource e criar o endpoint
 	
+     //Metodo buscar usuario por ID depois tem que ir no Resource e criar o endpoint
 	public Product findById(Long id) {
 		Optional<Product> obj =  repository.findById(id);//recuperar usuario por Id
 		return obj.orElseThrow(
 				() -> new ResourceNotFoundException("Objeto não encontrado ID: " + ", Tipo: " + Product.class.getName()));
 	}
 	
+	public Product insert (Product obj) {
+		return repository.save(obj);
 
 	}
+	
+	
+	public Product fromDTO(ProductDTO objDTO) { //Converter DTO para entidade
+		 return new Product(objDTO.getId(), objDTO.getName(), objDTO.getDescription(), objDTO.getPrice(), null); //recebendo os dados do DTO como parametro
+	 }
+	
+	
+
+}
 
 	
