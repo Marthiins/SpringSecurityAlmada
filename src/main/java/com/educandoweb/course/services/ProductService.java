@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import com.educandoweb.course.dto.ProductDTO;
@@ -36,6 +37,18 @@ public class ProductService {
 		return repository.save(obj);
 
 	}
+	
+	public void delete(Long id) {
+		findById(id);
+		try {
+			repository.deleteById(id);
+		} catch (DataIntegrityViolationException  e) {
+			 throw new DataIntegrityViolationException("Não é possivel excluir um produto que possua Categoria" , e);
+		}
+			
+			
+	}
+			
 	
 	
 	public Product fromDTO(ProductDTO objDTO) { //Converter DTO para entidade

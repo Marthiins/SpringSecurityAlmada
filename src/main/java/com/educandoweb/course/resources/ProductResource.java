@@ -4,6 +4,7 @@ import java.net.URI;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -26,6 +27,7 @@ public class ProductResource { // ProductResource que é um RestController
 	
 	private final ProductService service; //ProductResource que é um RestController tem a Dependencia com o Service
 
+	@Autowired
 	public ProductResource(ProductService service) {
 	this.service = service;
 }
@@ -60,5 +62,9 @@ public class ProductResource { // ProductResource que é um RestController
 		
 	}
 	
-	
+	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
+	public ResponseEntity<Void> delete(@PathVariable Long id) {
+		service.delete(id);
+		return ResponseEntity.noContent().build();
+	}
 }

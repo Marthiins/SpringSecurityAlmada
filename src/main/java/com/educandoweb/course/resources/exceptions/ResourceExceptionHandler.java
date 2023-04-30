@@ -2,6 +2,7 @@ package com.educandoweb.course.resources.exceptions;
 
 import java.time.Instant;
 
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -33,5 +34,14 @@ public class ResourceExceptionHandler {
 	}
 	
 	
+		@ExceptionHandler(DataIntegrityViolationException.class)
+		public ResponseEntity<StandardError> dataIntegrityViolation (DataIntegrityViolationException e, 
+				HttpServletRequest request){
+			String error = "Erro de integridade de dados";
+			HttpStatus status = HttpStatus.BAD_REQUEST;
+			StandardError err = new StandardError(Instant.now(), status.value(), error, e.getMessage(), request.getRequestURI());
+		    return ResponseEntity.status(status).body(err);
+		}
+		
 }
 
