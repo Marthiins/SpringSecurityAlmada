@@ -1,7 +1,10 @@
 package com.educandoweb.course.dto;
 
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 
+import com.educandoweb.course.entities.Category;
 import com.educandoweb.course.entities.Product;
 
 public class ProductDTO implements Serializable{
@@ -12,8 +15,7 @@ public class ProductDTO implements Serializable{
 	private String description;
 	private Double price;
 	// private String imgUrl; - Não quero expor essa entidade
-	
-	
+	private Set<Category> categories = new HashSet<>();
 	
 	public ProductDTO() {
 
@@ -24,11 +26,12 @@ public class ProductDTO implements Serializable{
 		name = obj.getName();
 		description = obj.getDescription();
 		price = obj.getPrice();
-		//imgUrl = obj.getImgUrl();
-	
-	
+		//imgUrl = obj.getIm = gUrl();
+		categories = obj.getCategories();
 	}
-
+	
+	
+	
 	public Long getId() {
 		return id;
 	}
@@ -59,6 +62,14 @@ public class ProductDTO implements Serializable{
 
 	public void setPrice(Double price) {
 		this.price = price;
+	}
+
+	public Set<Category> getCategories() {
+		return categories;
+	}
+
+	public void setCategories(Set<Category> categories) {
+		this.categories = categories;
 	}
 
 	/*public String getImgUrl() {

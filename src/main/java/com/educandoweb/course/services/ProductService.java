@@ -48,9 +48,20 @@ public class ProductService {
 			
 			
 	}
+	
+	public Product update (Product obj) { //Dados que o ususario vai enviar para a requisição não tem vinculo com o Banco de dados
+		Product newObj = findById(obj.getId()); //Instanciando um objecto produto e buscando no banco de dados
+		updateData(newObj , obj);//Pegando os dados que enviei no  obj e atualizar o newOBJ e depois salvar
+		return repository.save(newObj);
+	}
 			
-	
-	
+	private void updateData(Product newObj, Product obj) { //Atalizar conforme a regra de negocio
+		newObj.setName(obj.getName());
+		newObj.setDescription(obj.getDescription());
+		newObj.setPrice(obj.getPrice());
+		
+	}
+
 	public Product fromDTO(ProductDTO objDTO) { //Converter DTO para entidade
 		 return new Product(objDTO.getId(), objDTO.getName(), objDTO.getDescription(), objDTO.getPrice(), null); //recebendo os dados do DTO como parametro
 	 }

@@ -62,6 +62,18 @@ public class ProductResource { // ProductResource que é um RestController
 		
 	}
 	
+	//endpoint atualizar produto 
+		@RequestMapping(value = "/{id}" , method = RequestMethod.PUT)
+	    public ResponseEntity<Void> update(@Valid @RequestBody ProductDTO objDto , @PathVariable Long id){ //Retorna um objeto vazio e recebe como argumento ProductDTO
+			Product obj = service.fromDTO(objDto); //Converter esse objDto para Product 
+			obj.setId(id);
+			obj = service.update(obj);
+			
+			return ResponseEntity.noContent().build();
+			
+		}
+	
+	
 	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
 	public ResponseEntity<Void> delete(@PathVariable Long id) {
 		service.delete(id);
