@@ -1,6 +1,7 @@
 package com.educandoweb.course.resources;
 
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.educandoweb.course.entities.Category;
+import com.educandoweb.course.entities.Product;
 import com.educandoweb.course.services.CategoryService;
 
 @RestController
@@ -19,7 +21,7 @@ public class CategoryResource { // CategoryResource que é um RestController
 	@Autowired
 	private CategoryService service; //CategoryResource que é um RestController tem a Dependencia com o Service
 	
-	//endpoint para acessar os usuarios / controlador rest que responde no caminho categories
+	//endpoint para acessar as categorias / controlador rest que responde no caminho categories
 	@GetMapping
 	public ResponseEntity<List<Category>> findAll(){
 		List<Category>list = service.findAll();
@@ -27,11 +29,21 @@ public class CategoryResource { // CategoryResource que é um RestController
 		
 	}
 	
-	//endpoint buscar usuario por Id
+	//endpoint buscar categoria por Id
 	@GetMapping(value = "/{id}") // Vai indicar que minha requisição vai aceitar um id dentro da url
     public ResponseEntity<Category> finById(@PathVariable Long id){
 		Category obj = service.findById(id);
 		return ResponseEntity.ok().body(obj);
 		
 	}
+	
+	
+	//endpoint buscar produtos por categoria
+	@GetMapping(value = "/{id}/products") // Vai indicar que minha requisição vai aceitar um id dentro da url
+    public ResponseEntity<Set<Product>> findProducts(@PathVariable Long id){
+		Category obj = service.findById(id);
+		return ResponseEntity.ok().body(obj.getProducts());
+	
+	}
+
 }
