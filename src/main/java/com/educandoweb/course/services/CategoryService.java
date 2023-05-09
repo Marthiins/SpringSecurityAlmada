@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.educandoweb.course.entities.Category;
 import com.educandoweb.course.repositories.CategoryRepository;
+import com.educandoweb.course.services.exceptions.ObjectNotFoundException;
 
 @Service
 public class CategoryService {
@@ -26,7 +27,8 @@ public class CategoryService {
 	
 	public Category findById(Long id) {
 		Optional<Category> obj =  repository.findById(id);//recuperar usuario por Id
-				return obj.get();
+		return obj.orElseThrow(
+				() -> new ObjectNotFoundException("Objeto não encontrado ID: " + ", Tipo: " + Category.class.getName()));
 	}
 	
 }
